@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cenkalti/backoff"
+	backoff "github.com/cenkalti/backoff/v4"
 	"github.com/grepplabs/kafka-proxy/pkg/libs/oidc"
 	"github.com/sirupsen/logrus"
 )

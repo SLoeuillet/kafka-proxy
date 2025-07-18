@@ -1,10 +1,11 @@
 package googleidinfo
 
 import (
-	"github.com/cenkalti/backoff"
-	"github.com/sirupsen/logrus"
 	"sort"
 	"time"
+
+	backoff "github.com/cenkalti/backoff/v4"
+	"github.com/sirupsen/logrus"
 )
 
 type certsRefresher struct {

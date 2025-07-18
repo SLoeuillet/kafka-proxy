@@ -4,15 +4,16 @@ import (
 	"context"
 	"crypto/rsa"
 	"fmt"
-	"github.com/cenkalti/backoff"
+	"regexp"
+	"sync"
+	"time"
+
+	backoff "github.com/cenkalti/backoff/v4"
 	"github.com/grepplabs/kafka-proxy/pkg/apis"
 	"github.com/grepplabs/kafka-proxy/pkg/libs/googleid"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/oauth2/jws"
-	"regexp"
-	"sync"
-	"time"
 )
 
 const (
@@ -82,7 +83,8 @@ func NewTokenInfo(options TokenInfoOptions) (*TokenInfo, error) {
 	op := func() error {
 		return tokenInfo.refreshCerts()
 	}
-	err := backoff.Retry(op, backoff.WithMaxTries(backoff.NewConstantBackOff(1*time.Second), 3))
+	b := backoff.WithMaxRetries(backoff.NewConstantBackOff(1*time.Second), 3)
+	err := backoff.Retry(op, b)
 	if err != nil {
 		return nil, errors.Wrapf(err, "getting of google certs failed")
 	}

@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cenkalti/backoff"
+	backoff "github.com/cenkalti/backoff/v4"
 	"github.com/grepplabs/kafka-proxy/pkg/apis"
 	"github.com/grepplabs/kafka-proxy/pkg/libs/oidc"
 	"github.com/grepplabs/kafka-proxy/pkg/libs/util"
@@ -88,9 +88,8 @@ func NewTokenProvider(options TokenProviderOptions) (*TokenProvider, error) {
 		return initToken(tokenProvider)
 	}
 
-	err = backoff.Retry(
-		op,
-		backoff.WithMaxTries(backoff.NewConstantBackOff(1*time.Second), 3))
+	b := backoff.WithMaxRetries(backoff.NewConstantBackOff(1*time.Second), 3)
+	err = backoff.Retry(op, b)
 
 	if err != nil {
 		return nil, errors.Wrap(err, "getting of initial oidc token failed")

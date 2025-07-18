@@ -3,10 +3,11 @@ package googleidprovider
 import (
 	"context"
 	"fmt"
-	"github.com/cenkalti/backoff"
+	"time"
+
+	backoff "github.com/cenkalti/backoff/v4"
 	"github.com/grepplabs/kafka-proxy/pkg/libs/googleid"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 type TokenRefresher struct {

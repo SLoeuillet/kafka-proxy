@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.29.17
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.70
 	github.com/aws/aws-sdk-go-v2/service/sts v1.34.0
-	github.com/cenkalti/backoff v1.1.0
+	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/elazarl/goproxy v1.7.2
 	github.com/elazarl/goproxy/ext v0.0.0-20250305112401-088f758167d2
 	github.com/fsnotify/fsnotify v1.9.0

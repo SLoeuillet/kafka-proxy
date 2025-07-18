@@ -3,15 +3,16 @@ package googleidprovider
 import (
 	"context"
 	"fmt"
-	"github.com/cenkalti/backoff"
+	"os"
+	"sync"
+	"time"
+
+	backoff "github.com/cenkalti/backoff/v4"
 	"github.com/grepplabs/kafka-proxy/pkg/apis"
 	"github.com/grepplabs/kafka-proxy/pkg/libs/googleid"
 	"github.com/grepplabs/kafka-proxy/pkg/libs/util"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"os"
-	"sync"
-	"time"
 )
 
 const (
@@ -81,7 +82,8 @@ func NewTokenProvider(options TokenProviderOptions) (*TokenProvider, error) {
 	op := func() error {
 		return initToken(tokenProvider)
 	}
-	err := backoff.Retry(op, backoff.WithMaxTries(backoff.NewConstantBackOff(1*time.Second), 3))
+	b := backoff.WithMaxRetries(backoff.NewConstantBackOff(1*time.Second), 3)
+	err := backoff.Retry(op, b)
 	if err != nil {
 		return nil, errors.Wrap(err, "getting of initial google-id-token failed")
 	}
